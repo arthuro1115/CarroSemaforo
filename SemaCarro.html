@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Semaforo</title>
+
+</head>
+<body>
+
+    <div id="ruadiv">
+        <canvas id="canvas" width="1000px" height="1000px" >Não suporta</canvas>
+    </div>
+    <div id="semadiv">
+        <canvas id="canvas2" width="1000px" height="100px" style="background-color: black;" >Não suporta</canvas>
+    </div>
+    
+    <p>Tempo decorrido</p>
+    <p id="demo"></p>
+
+    <script>
+    var fundo = document.getElementById("canvas");
+    var c = fundo.getContext("2d");
+    
+    function desenhaBackground() {
+        var imagem = new Image();
+        imagem.src = "ruaBase1.png";
+        imagem.onload = function() {
+                c.drawImage(imagem,10,10);
+        }
+    }
+    
+    </script>
+
+     <!-- COR DO SEMAFORO-->
+    <script>
+    //Semaforo inferior        
+    function semaforoSupRED(){ 
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'red';
+                getcirc.arc(100, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+            }
+            
+    function semaforoSupYellow(){
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'orange';
+                getcirc.arc(200, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+
+            }
+
+    function semaforoSupGreen(){
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'green';
+                getcirc.arc(300, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+
+            }  
+       
+    //Semaforo Inferior                    
+    function semaforoInfRED(){
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'red';
+                getcirc.arc(700, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+            }
+
+    function semaforoInfYellow(){
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'orange';
+                getcirc.arc(800, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+        }
+
+    function semaforoInfGreen(){
+                var circ = document.getElementById("canvas2");
+                var getcirc = circ.getContext("2d");
+                getcirc.beginPath();
+                getcirc.lineWidth = 5;
+                getcirc.fillStyle = 'green';
+                getcirc.arc(900, 50, 35, 0 * Math.PI , 2 * Math.PI);
+                getcirc.fill();
+        }  
+    </script>
+
+    <!--Tempo-->
+    <script>
+
+    var cont = 0;
+    var clear = document.getElementById("canvas2");
+    var clearCanvas = clear.getContext("2d");
+
+    var redRight = 0;
+    var yellowRight = 0;
+    var greenRight = 0;
+
+    var redLeft = 0;
+    var yellowLeft = 0;
+    var greenLeft = 0;
+
+    var reset  = 0;
+
+    
+    //<!--Condicionais Semaforo-->
+    var timer = setInterval( function time(){
+
+        cont = cont + 1;
+        document.getElementById("demo").innerHTML = cont;
+        //Limpa
+        if(cont > 16){
+            cont = 0;
+            clearCanvas.clearRect(0, 0, canvas.width, canvas.height);
+            reset = 1 ;
+            y = 20;
+            x = 250;
+            z = -230;
+        }
+        //Inf Verde Sup Vermelho 3 seg
+        if (cont < 4){
+            reset = 0;
+            semaforoInfGreen();
+            semaforoSupRED();
+            redRight = 0;
+            yellowRight = 0;
+            greenRight = 1;
+
+            redLeft = 1;
+            yellowLeft = 0;
+            greenLeft = 0;
+        }
+        //Inf Amarelo Sup Vermelho 2 seg
+        else if (cont >= 4 && cont < 7){
+            clearCanvas.clearRect(0, 0, canvas.width, canvas.height);
+            semaforoInfYellow();
+            semaforoSupRED();
+            redRight = 0;
+            yellowRight = 0;
+            greenRight = 0;
+
+            redLeft = 0;
+            yellowLeft = 0;
+            greenLeft = 0;
+        }
+        //Inf Vermelho Sup Verde 4 seg
+        if (cont >=7 && cont <= 10) {
+            clearCanvas.clearRect(0, 0, canvas.width, canvas.height);
+            semaforoInfRED();
+            semaforoSupGreen();
+            redRight = 1;
+            yellowRight = 0;
+            greenRight = 0;
+
+            redLeft = 0;
+            yellowLeft = 0;
+            greenLeft = 1;
+        }
+        //Inf Vermelho Sup Amarelo 2 seg
+        if (cont >=10 && cont <12){
+            clearCanvas.clearRect(0, 0, canvas.width, canvas.height);
+            semaforoInfRED();
+            semaforoSupYellow();
+        }
+        //Inf Verde Sup Vermelho 4 seg
+        if (cont >=12 && cont <16){
+            clearCanvas.clearRect(0, 0, canvas.width, canvas.height);
+            semaforoInfGreen();
+            semaforoSupRED();
+            
+        }
+       
+    }, 1000);
+    
+    </script>
+
+    <!--Movimento Carro-->
+    <script>
+
+    var rua = document.getElementById("canvas");
+    var drawRua = rua.getContext("2d");
+
+    var imagem2 = new Image();
+    imagem2.src = "carroBlue.png";
+
+    var imagem3 = new Image();
+    imagem3.src = "carroRed90.png";
+
+    var x = 250;
+    var y = 20;
+    var z = 20; 
+
+
+    var anima = setInterval(function desenhaCarroBlue(){
+            
+            desenhaBackground();
+
+            var imagem2 = new Image();
+            imagem2.src = "carroBlue.png";
+
+            var imagem3 =  new Image();
+            imagem3.src = "carroRed90.png";
+
+            var imagem4 =  new Image();
+            imagem4.src = "carroPolicia.png";
+
+
+        //Carro Azul Parado
+        imagem2.onload = function(){
+                    drawRua.drawImage(imagem2, x, 455, 200, 200);
+                    if(greenLeft == 1 && redRight == 1){
+                    x = x + 1.5;
+                    }
+            }
+        //Carro Vermelho mover
+        if(greenRight == 1 && redLeft == 1){
+        imagem3.onload = function() {
+                    y = y + 4.5 ;
+                    drawRua.drawImage(imagem3, 470,y,200,200); 
+                   
+            }
+        }
+        imagem4.onload = function(){
+            drawRua.drawImage(imagem4, z, 365, 200, 200);
+            if(greenLeft == 1 && redRight == 1){
+                    z = z + 3;
+                }
+            
+        }
+     
+        }, 10);
+
+
+
+    </script>
+  
+</body>
+</html>
